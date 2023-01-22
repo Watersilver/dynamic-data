@@ -40,7 +40,19 @@ function createEntity({
 
 export type EntityCreator = typeof createEntity;
 
-// TODO: import and export
+type JsonSchema = {
+  type: "function", data: string
+} | {
+  type: "set" | "array", data: JsonSchema[]
+} | {
+  type: "map", data: [JsonSchema, JsonSchema][]
+} | {
+  type: "object", data: {[key: string]: JsonSchema}
+} | {
+  type: "primitive", data: unknown
+}
+
+// TODO: security for Function creator
 class Data<
   Props = any,
   GroupProps = Props,
@@ -89,6 +101,83 @@ class Data<
     this.onEntityConstruct = options?.onEntityConstruct;
     this.entity = createEntity({data: this, schema});
     this.onFieldChange = options?.onFieldChange;
+  }
+
+  static import(jsonSchema: JsonSchema) {
+    if (jsonSchema.type === "primitive") {
+      return jsonSchema.data;
+    } else if (jsonSchema.type === "function") {
+      return new Function('"use strict"; const func = ' + jsonSchema.data + "; return func;")();
+    } else if (jsonSchema.type === "set") {
+      const data: any[] = [];
+      for (const d of jsonSchema.data) {
+        data.push(Data.import(d));
+      }
+      return new Set(data);
+    } else if (jsonSchema.type === "array") {
+      const data: any[] = [];
+      for (const d of jsonSchema.data) {
+        data.push(Data.import(d));
+      }
+      return data;
+    } else if (jsonSchema.type === "map") {
+      const data: any[] = [];
+      for (const d of jsonSchema.data) {
+        data.push(Data.import(d[0]), Data.import(d[1]));
+      }
+      return new Map(data);
+    } else {
+      const data: any = {};
+      for (const [key, d] of Object.entries(jsonSchema.data)) {
+        data[key] = this.import(d);
+      }
+      return data;
+    }
+  }
+
+  // Does not handle cyclic structures at this point
+  private _export(s: any): JsonSchema {
+    if (typeof s === "function") {
+      return {
+        type: "function",
+        data: s.toString()
+      }
+    } else if (typeof s === "object") {
+      let o = s;
+      let type: "map" | "array" | "set" | "object" = "object";
+      let notArray = false;
+      let e: any;
+      if (s instanceof Map || s instanceof Set) {
+        notArray = true;
+        o = Array.from(o);
+        type = s instanceof Map ? "map" : "set";
+      }
+      if (Array.isArray(o)) {
+        type = notArray ? type : "array";
+        e = [];
+        for (const x of o) {
+          e.push(this._export(x));
+        }
+      } else {
+        e = {};
+        for (const [key, value] of Object.entries(o)) {
+          e[key] = this._export(value);
+        }
+      }
+      return {
+        type,
+        data: e
+      }
+    } else {
+      return {
+        type: "primitive",
+        data: s
+      }
+    }
+  }
+  // Exports json representation of schema
+  export(): JsonSchema {
+    return this._export(this.entity.schema);
   }
 
   props?: Props;

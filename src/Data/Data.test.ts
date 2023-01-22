@@ -63,7 +63,86 @@ describe("Data", () => {
     e2 = e2?.container;
 
     expect(1).toBe(1);
-  })
+  });
+
+  it("imports/exports", () => {
+    const d = new Data({
+      type: "group",
+      contents: {
+        a: {
+          type: "field",
+          subtype: "number",
+          rules: {
+            min: (e: any) => (e.container.props.ad || 69) - 1
+          },
+          props: {
+            bad: (d: Data) => d.entity.props.ad
+          }
+        }
+      },
+      props: {
+        ad: 1
+      }
+    });
+    const exp = d.export();
+    expect(exp).toEqual({
+      type: "object",
+      data: {
+        type: {
+          type: "primitive",
+          data: "group"
+        },
+        props: {
+          type: "object",
+          data: {
+            ad: {
+              type: "primitive",
+              data: 1
+            }
+          }
+        },
+        contents: {
+          type: "object",
+          data: {
+            a: {
+              type: "object",
+              data: {
+                type: {
+                  type: "primitive",
+                  data: "field"
+                },
+                subtype: {
+                  type: "primitive",
+                  data: "number"
+                },
+                props: {
+                  type: "object",
+                  data: {
+                    bad: {
+                      type: "function",
+                      data: "(d) => d.entity.props.ad"
+                    }
+                  }
+                },
+                rules: {
+                  type: "object",
+                  data: {
+                    min: {
+                      type: "function",
+                      data: "(e) => (e.container.props.ad || 69) - 1"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+    const imported = new Data(Data.import(exp));
+    expect(imported.tread('a')?.props.bad(imported)).toBe(1);
+    expect(imported.tread('a')?.number?.rules?.min).toBe(0);
+  });
 
   const d = new Data({
     type: "group",
