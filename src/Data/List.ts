@@ -1,16 +1,16 @@
-import { EntityInterface, ListErrors, GroupInterface, ListInterface, ListRules, Value, Errors } from "../interface";
-import { ListSchema } from "../schema";
-import type Data from "./Data";
-import { EntityCreator } from "./Data";
-import { applyRule } from "./helpers/applyRule";
-import { clone } from "./helpers/clone";
-// import didValChange from "./helpers/didValChange";
-import { equals, isJson } from "./helpers/Json";
-import { getIndex } from "./methods/getIndex";
-import { getName } from "./methods/getName";
-import { getPath } from "./methods/getPath";
-import { satisfiesRequirement } from "./methods/satisfiesRequirement";
-import { tread } from "./methods/tread";
+import { EntityInterface, ListErrors, GroupInterface, ListInterface, ListRules, Value, Errors } from "../interface"
+import { ListSchema } from "../schema"
+import type Data from "./Data"
+import { EntityCreator } from "./Data"
+import { applyRule } from "./helpers/applyRule"
+import { clone } from "./helpers/clone"
+// import didValChange from "./helpers/didValChange"
+import { equals, isJson } from "./helpers/Json"
+import { getIndex } from "./methods/getIndex"
+import { getName } from "./methods/getName"
+import { getPath } from "./methods/getPath"
+import { satisfiesRequirement } from "./methods/satisfiesRequirement"
+import { tread } from "./methods/tread"
 
 class List implements ListInterface {
   get path() {

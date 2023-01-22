@@ -1,4 +1,4 @@
-import { EntitySchema } from "../schema";
+import { EntitySchema } from "../schema"
 import Data from "./Data"
 
 describe("Data", () => {

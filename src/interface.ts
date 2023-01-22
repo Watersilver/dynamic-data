@@ -1,6 +1,6 @@
-import type Data from "./Data";
-import { Json } from "./Data/helpers/Json";
-import { GroupSchema, ListSchema, NumberFieldSchema, SelectFieldSchema, TextFieldSchema } from "./schema";
+import type Data from "./Data"
+import { Json } from "./Data/helpers/Json"
+import { GroupSchema, ListSchema, NumberFieldSchema, SelectFieldSchema, TextFieldSchema } from "./schema"
 
 export type Value = number | string | {[key: string]: Value} | Value[] | undefined;
 

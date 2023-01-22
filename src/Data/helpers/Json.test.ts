@@ -1,4 +1,4 @@
-import { clone, equals, includes, isCyclic, isJson } from "./Json";
+import { clone, equals, includes, isCyclic, isJson } from "./Json"
 
 describe("isCyclic", () => {
   it("returns true for cyclic structures", () => {

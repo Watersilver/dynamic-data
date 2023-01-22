@@ -1,4 +1,4 @@
-import { EntityInterface } from "../../interface";
+import { EntityInterface } from "../../interface"
 
 export function getIndex(ent: EntityInterface) {
   if (!ent.container) return undefined;

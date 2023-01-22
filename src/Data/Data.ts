@@ -1,10 +1,10 @@
 import { EntityInterface, GroupInterface, ListInterface } from "../interface"
 import { EntitySchema } from "../schema"
-import Group from "./Group";
-import List from "./List";
-import NumberField from "./NumberField";
-import TextField from "./TextField";
-import SelectField from "./SelectField";
+import Group from "./Group"
+import List from "./List"
+import NumberField from "./NumberField"
+import TextField from "./TextField"
+import SelectField from "./SelectField"
 
 // Bypasses circular dependecies
 function createEntity({
@@ -41,7 +41,6 @@ function createEntity({
 export type EntityCreator = typeof createEntity;
 
 // TODO: import and export
-// TODO: Export guards and types
 // TODO: Async rules and func/async default value
 class Data<
   Props = any,

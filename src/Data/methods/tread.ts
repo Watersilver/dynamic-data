@@ -1,4 +1,4 @@
-import { EntityInterface } from "../../interface";
+import { EntityInterface } from "../../interface"
 
 export function tread(e: EntityInterface, arg1?: number | string | (string | number)[], path?: string | (string | number)[]) {
   let backtrack: number | undefined;

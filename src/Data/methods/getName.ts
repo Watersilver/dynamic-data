@@ -1,4 +1,4 @@
-import { EntityInterface, isGroup } from "../../interface";
+import { EntityInterface, isGroup } from "../../interface"
 
 export function getName(ent: EntityInterface) {
   if (!ent.container) return undefined;

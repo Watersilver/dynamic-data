@@ -1,15 +1,15 @@
-import { EntityInterface, GroupInterface, ListInterface, SelectFieldErrors, SelectFieldInterface, SelectFieldRules } from "../interface";
-import { SelectFieldSchema } from "../schema";
-import type Data from "./Data";
-import { applyRule } from "./helpers/applyRule";
-import { clone } from "./helpers/clone";
-import didValChange from "./helpers/didValChange";
-import { equals, isJson, Json } from "./helpers/Json";
-import { getIndex } from "./methods/getIndex";
-import { getName } from "./methods/getName";
-import { getPath } from "./methods/getPath";
-import { satisfiesRequirement } from "./methods/satisfiesRequirement";
-import { tread } from "./methods/tread";
+import { EntityInterface, GroupInterface, ListInterface, SelectFieldErrors, SelectFieldInterface, SelectFieldRules } from "../interface"
+import { SelectFieldSchema } from "../schema"
+import type Data from "./Data"
+import { applyRule } from "./helpers/applyRule"
+import { clone } from "./helpers/clone"
+import didValChange from "./helpers/didValChange"
+import { equals, isJson, Json } from "./helpers/Json"
+import { getIndex } from "./methods/getIndex"
+import { getName } from "./methods/getName"
+import { getPath } from "./methods/getPath"
+import { satisfiesRequirement } from "./methods/satisfiesRequirement"
+import { tread } from "./methods/tread"
 
 class SelectField implements SelectFieldInterface {
   get path() {

@@ -1,5 +1,5 @@
-import { EntityInterface } from "../../interface";
-import { equals } from "./Json";
+import { EntityInterface } from "../../interface"
+import { equals } from "./Json"
 
 export default function didValChange(e: EntityInterface, prevVal: any) {
   const val = e.value;

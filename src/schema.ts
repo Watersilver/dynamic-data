@@ -1,6 +1,6 @@
-import type Data from "./Data";
-import { Json } from "./Data/helpers/Json";
-import { EntityInterface, GroupInterface, ListInterface, NumberFieldInterface, TextFieldInterface } from "./interface";
+import type Data from "./Data"
+import { Json } from "./Data/helpers/Json"
+import { EntityInterface, GroupInterface, ListInterface, NumberFieldInterface, TextFieldInterface } from "./interface"
 
 export type Rule<T, Type = string, Subtype = string> = T | ((
   entity: Type extends "field" ? (

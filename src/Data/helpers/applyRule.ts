@@ -1,5 +1,5 @@
-import { EntityInterface } from "../../interface";
-import type Data from "../Data";
+import { EntityInterface } from "../../interface"
+import type Data from "../Data"
 
 type NonFunction = object | string | number | boolean | symbol | bigint | null | undefined;
 

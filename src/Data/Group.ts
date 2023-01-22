@@ -1,17 +1,17 @@
-import { EntityInterface, GroupErrors, GroupInterface, GroupRules, ListInterface, Value } from "../interface";
-import { GroupSchema } from "../schema";
-import type Data from "./Data";
-import { EntityCreator } from "./Data";
-import { applyRule } from "./helpers/applyRule";
-import { arrIncludes } from "./helpers/arrayUtil";
-import { clone } from "./helpers/clone";
-// import didValChange from "./helpers/didValChange";
-import { equals, isJson } from "./helpers/Json";
-import { getIndex } from "./methods/getIndex";
-import { getName } from "./methods/getName";
-import { getPath } from "./methods/getPath";
-import { satisfiesRequirement } from "./methods/satisfiesRequirement";
-import { tread } from "./methods/tread";
+import { EntityInterface, GroupErrors, GroupInterface, GroupRules, ListInterface, Value } from "../interface"
+import { GroupSchema } from "../schema"
+import type Data from "./Data"
+import { EntityCreator } from "./Data"
+import { applyRule } from "./helpers/applyRule"
+import { arrIncludes } from "./helpers/arrayUtil"
+import { clone } from "./helpers/clone"
+// import didValChange from "./helpers/didValChange"
+import { equals, isJson } from "./helpers/Json"
+import { getIndex } from "./methods/getIndex"
+import { getName } from "./methods/getName"
+import { getPath } from "./methods/getPath"
+import { satisfiesRequirement } from "./methods/satisfiesRequirement"
+import { tread } from "./methods/tread"
 
 class Group implements GroupInterface {
   get path() {

@@ -1,7 +1,7 @@
-import { isGroup, isList } from "../../interface";
-import { Requirement } from "../../schema";
-import Data from "../Data";
-import { equals, includes, Json } from "../helpers/Json";
+import { isGroup, isList } from "../../interface"
+import { Requirement } from "../../schema"
+import Data from "../Data"
+import { equals, includes, Json } from "../helpers/Json"
 
 function isPath(a: any[]): a is (string | number)[] {
   for (const i of a) {

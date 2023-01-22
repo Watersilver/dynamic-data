@@ -1,15 +1,15 @@
-import { EntityInterface, GroupInterface, ListInterface, TextFieldErrors, TextFieldInterface, TextFieldRules } from "../interface";
-import { TextFieldSchema } from "../schema";
-import type Data from "./Data";
-import { applyRule } from "./helpers/applyRule";
-import { clone } from "./helpers/clone";
-import didValChange from "./helpers/didValChange";
-import { equals, isJson } from "./helpers/Json";
-import { getIndex } from "./methods/getIndex";
-import { getName } from "./methods/getName";
-import { getPath } from "./methods/getPath";
-import { satisfiesRequirement } from "./methods/satisfiesRequirement";
-import { tread } from "./methods/tread";
+import { EntityInterface, GroupInterface, ListInterface, TextFieldErrors, TextFieldInterface, TextFieldRules } from "../interface"
+import { TextFieldSchema } from "../schema"
+import type Data from "./Data"
+import { applyRule } from "./helpers/applyRule"
+import { clone } from "./helpers/clone"
+import didValChange from "./helpers/didValChange"
+import { equals, isJson } from "./helpers/Json"
+import { getIndex } from "./methods/getIndex"
+import { getName } from "./methods/getName"
+import { getPath } from "./methods/getPath"
+import { satisfiesRequirement } from "./methods/satisfiesRequirement"
+import { tread } from "./methods/tread"
 
 class TextField implements TextFieldInterface {
   get path() {

@@ -1,4 +1,4 @@
-import { arrEqual } from "./arrayUtil";
+import { arrEqual } from "./arrayUtil"
 
 it("returns true for equal arrays", () => {
   expect(arrEqual([], [])).toBe(true);
