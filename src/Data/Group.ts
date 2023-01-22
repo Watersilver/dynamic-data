@@ -105,7 +105,10 @@ class Group implements GroupInterface {
   }
 
   reset() {
-    if (this.schema.default) this.value = this.schema.default;
+    if (this.schema.default) {
+      const v = typeof this.schema.default === "function" ? this.schema.default(this) : this.schema.default;
+      this.value = v;
+    }
     else this.clear();
     for (const item of Object.values(this.contents)) {
       item.reset();
@@ -162,10 +165,10 @@ class Group implements GroupInterface {
     if (!this.schema.rules) return undefined;
 
     return {
-      disabled: applyRule(this.schema.rules.disabled, this, this.data),
-      invalid: applyRule(this.schema.rules.invalid, this, this.data),
-      required: applyRule(this.schema.rules.required, this, this.data),
-      requires: applyRule(this.schema.rules.requires, this, this.data)
+      disabled: applyRule(this.schema.rules.disabled, this),
+      invalid: applyRule(this.schema.rules.invalid, this),
+      required: applyRule(this.schema.rules.required, this),
+      requires: applyRule(this.schema.rules.requires, this)
     }
   };
 

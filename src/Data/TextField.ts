@@ -90,7 +90,12 @@ class TextField implements TextFieldInterface {
     return this.value === "";
   }
   clear() {this.value = ""}
-  reset() {this.value = this.schema.default ?? ""}
+  reset() {
+    if (this.schema.default) {
+      const v = typeof this.schema.default === "function" ? this.schema.default(this) : this.schema.default;
+      this.value = v;
+    } else this.clear();
+  }
 
   private _v: any = "";
   set value(v) {
@@ -114,14 +119,14 @@ class TextField implements TextFieldInterface {
     if (!this.schema.rules) return undefined;
 
     return {
-      disabled: applyRule(this.schema.rules.disabled, this, this.data),
-      invalid: applyRule(this.schema.rules.invalid, this, this.data),
-      required: applyRule(this.schema.rules.required, this, this.data),
-      requires: applyRule(this.schema.rules.requires, this, this.data),
-      minlength: applyRule(this.schema.rules.minlength, this, this.data),
-      maxlength: applyRule(this.schema.rules.maxlength, this, this.data),
-      fixedlength: applyRule(this.schema.rules.fixedlength, this, this.data),
-      pattern: applyRule(this.schema.rules.pattern, this, this.data)
+      disabled: applyRule(this.schema.rules.disabled, this),
+      invalid: applyRule(this.schema.rules.invalid, this),
+      required: applyRule(this.schema.rules.required, this),
+      requires: applyRule(this.schema.rules.requires, this),
+      minlength: applyRule(this.schema.rules.minlength, this),
+      maxlength: applyRule(this.schema.rules.maxlength, this),
+      fixedlength: applyRule(this.schema.rules.fixedlength, this),
+      pattern: applyRule(this.schema.rules.pattern, this)
     }
   };
 

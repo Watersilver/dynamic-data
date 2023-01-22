@@ -97,7 +97,12 @@ class SelectField implements SelectFieldInterface {
     return Array.isArray(this.value) && this.value?.length === 0;
   }
   clear() {this.value = []}
-  reset() {this.value = this.schema.default ?? []}
+  reset() {
+    if (this.schema.default) {
+      const v = typeof this.schema.default === "function" ? this.schema.default(this) : this.schema.default;
+      this.value = v;
+    } else this.clear();
+  }
 
   private _v: any = [];
   set value(v) {
@@ -121,13 +126,13 @@ class SelectField implements SelectFieldInterface {
     if (!this.schema.rules) return undefined;
 
     return {
-      disabled: applyRule(this.schema.rules.disabled, this, this.data),
-      invalid: applyRule(this.schema.rules.invalid, this, this.data),
-      required: applyRule(this.schema.rules.required, this, this.data),
-      requires: applyRule(this.schema.rules.requires, this, this.data),
-      minselected: applyRule(this.schema.rules.minselected, this, this.data),
-      maxselected: applyRule(this.schema.rules.maxselected, this, this.data),
-      fixedselected: applyRule(this.schema.rules.fixedselected, this, this.data)
+      disabled: applyRule(this.schema.rules.disabled, this),
+      invalid: applyRule(this.schema.rules.invalid, this),
+      required: applyRule(this.schema.rules.required, this),
+      requires: applyRule(this.schema.rules.requires, this),
+      minselected: applyRule(this.schema.rules.minselected, this),
+      maxselected: applyRule(this.schema.rules.maxselected, this),
+      fixedselected: applyRule(this.schema.rules.fixedselected, this)
     }
   };
 

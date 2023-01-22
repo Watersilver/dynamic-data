@@ -107,7 +107,10 @@ class List implements ListInterface {
   }
 
   reset() {
-    if (this.schema.default) this.value = this.schema.default;
+    if (this.schema.default) {
+      const v = typeof this.schema.default === "function" ? this.schema.default(this) : this.schema.default;
+      this.value = v;
+    }
     else this.clear();
     for (const item of this.items) {
       item.reset();
@@ -176,12 +179,12 @@ class List implements ListInterface {
     if (!this.schema.rules) return undefined;
   
     return {
-      disabled: applyRule(this.schema.rules.disabled, this, this.data),
-      invalid: applyRule(this.schema.rules.invalid, this, this.data),
-      required: applyRule(this.schema.rules.required, this, this.data),
-      minitems: applyRule(this.schema.rules.minitems, this, this.data),
-      maxitems: applyRule(this.schema.rules.maxitems, this, this.data),
-      fixeditems: applyRule(this.schema.rules.fixeditems, this, this.data)
+      disabled: applyRule(this.schema.rules.disabled, this),
+      invalid: applyRule(this.schema.rules.invalid, this),
+      required: applyRule(this.schema.rules.required, this),
+      minitems: applyRule(this.schema.rules.minitems, this),
+      maxitems: applyRule(this.schema.rules.maxitems, this),
+      fixeditems: applyRule(this.schema.rules.fixeditems, this)
     }
   };
 

@@ -128,7 +128,12 @@ class NumberField implements NumberFieldInterface {
     return this.value === null;
   }
   clear() {this.value = null}
-  reset() {this.value = this.schema.default ?? null}
+  reset() {
+    if (this.schema.default) {
+      const v = typeof this.schema.default === "function" ? this.schema.default(this) : this.schema.default;
+      this.value = v;
+    } else this.clear();
+  }
 
   private _v: any = null;
   set value(v) {
@@ -152,13 +157,13 @@ class NumberField implements NumberFieldInterface {
     if (!this.schema.rules) return undefined;
 
     return {
-      disabled: applyRule(this.schema.rules.disabled, this, this.data),
-      invalid: applyRule(this.schema.rules.invalid, this, this.data),
-      required: applyRule(this.schema.rules.required, this, this.data),
-      requires: applyRule(this.schema.rules.requires, this, this.data),
-      min: applyRule(this.schema.rules.min, this, this.data),
-      max: applyRule(this.schema.rules.max, this, this.data),
-      step: applyRule(this.schema.rules.step, this, this.data)
+      disabled: applyRule(this.schema.rules.disabled, this),
+      invalid: applyRule(this.schema.rules.invalid, this),
+      required: applyRule(this.schema.rules.required, this),
+      requires: applyRule(this.schema.rules.requires, this),
+      min: applyRule(this.schema.rules.min, this),
+      max: applyRule(this.schema.rules.max, this),
+      step: applyRule(this.schema.rules.step, this)
     }
   };
 

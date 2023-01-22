@@ -1,16 +1,25 @@
-import type Data from "./Data"
 import { Json } from "./Data/helpers/Json"
-import { EntityInterface, GroupInterface, ListInterface, NumberFieldInterface, TextFieldInterface } from "./interface"
+import { EntityInterface, GroupInterface, ListInterface, NumberFieldInterface, SelectFieldInterface, TextFieldInterface } from "./interface"
 
-export type Rule<T, Type = string, Subtype = string> = T | ((
+type Rule<
+  Props,
+  GroupProps,
+  ListProps,
+  TextFieldProps,
+  NumberFieldProps,
+  SelectFieldProps,
+  T = any,
+  Type = string,
+  Subtype = string
+> = T | ((
   entity: Type extends "field" ? (
-    Subtype extends "text" ? TextFieldInterface
-    : Subtype extends "number" ? NumberFieldInterface
+    Subtype extends "text" ? TextFieldInterface<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps>
+    : Subtype extends "number" ? NumberFieldInterface<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps>
+    : Subtype extends "select" ? SelectFieldInterface<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps>
     : EntityInterface
-  ) : Type extends "group" ? GroupInterface
-  : Type extends "list" ? ListInterface
-  : EntityInterface,
-  data: Data
+  ) : Type extends "group" ? GroupInterface<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps>
+  : Type extends "list" ? ListInterface<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps>
+  : EntityInterface
 ) => T);
 
 type SingleRequirement =
@@ -34,25 +43,25 @@ type AnyOf = {
 }
 export type Requirement = SingleRequirement | AllOf | AnyOf;
 
-type BaseRules<Type = string, Subtype = string> = {
+type BaseRules<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, Type = string, Subtype = string> = {
   /** General rule to determine if entity is disabled. */
-  disabled?: Rule<boolean, Type, Subtype>;
+  disabled?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, boolean, Type, Subtype>;
 
   /** General rule to determine if entity is invalid. */
-  invalid?: Rule<boolean, Type, Subtype>;
+  invalid?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, boolean, Type, Subtype>;
 
   /**
    * Special rule to determine if entity is invalid.
    * If true, entity cannot be empty.
   */
-  required?: Rule<boolean, Type, Subtype>;
+  required?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, boolean, Type, Subtype>;
 
   /**
    * Special rule to determine if entity is disabled.
    * Entity can require some other entity or entities
    * to not be empty or have some specific value(s).
    */
-  requires?: Rule<Requirement, Type, Subtype>;
+  requires?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, Requirement, Type, Subtype>;
 };
 
 type AbstractEntitySchema<
@@ -66,7 +75,6 @@ type AbstractEntitySchema<
   SelectFieldProps = NumberFieldProps
 > = {
   type: string;
-  default?: any;
   props?: Type extends "group" ?
     GroupProps :
     Type extends "list" ?
@@ -121,28 +129,28 @@ export type TextFieldSchema<
   SelectFieldProps
 > & {
   subtype: "text";
-  default?: string;
-  rules?: BaseRules<"field", "text"> & {
+  default?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, string, "field", "text">;
+  rules?: BaseRules<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, "field", "text"> & {
     /**
      * Special rule to determine if entity is invalid.
      * Number of characters cannot be less than this.
     */
-    minlength?: Rule<number, "field", "text">;
+    minlength?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "field", "text">;
     /**
      * Special rule to determine if entity is invalid.
      * Number of characters cannot be more than this.
     */
-    maxlength?: Rule<number, "field", "text">;
+    maxlength?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "field", "text">;
     /**
      * Special rule to determine if entity is invalid.
      * Number of characters cannot be other than this.
     */
-    fixedlength?: Rule<number, "field", "text">;
+    fixedlength?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "field", "text">;
     /**
      * Special rule to determine if entity is invalid.
      * Value must conform to pattern.
     */
-    pattern?: Rule<string | [string, string], "field", "text">;
+    pattern?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, string | [string, string], "field", "text">;
   };
 };
 
@@ -163,28 +171,28 @@ export type NumberFieldSchema<
   SelectFieldProps
 > & {
   subtype: "number";
-  default?: number;
-  rules?: BaseRules<"field", "number"> & {
+  default?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "field", "number">;
+  rules?: BaseRules<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, "field", "number"> & {
     /**
      * Special rule to determine if entity is invalid.
      * Value cannot be less than this.
      * If exclusive is true it cannot be equal to this either.
     */
-    min?: Rule<number | {value: number; exclusive: boolean}, "field", "number">;
+    min?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number | {value: number; exclusive: boolean}, "field", "number">;
 
     /**
      * Special rule to determine if entity is invalid.
      * Value cannot be more than this.
      * If exclusive is true it cannot be equal to this either.
     */
-    max?: Rule<number | {value: number; exclusive: boolean}, "field", "number">;
+    max?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number | {value: number; exclusive: boolean}, "field", "number">;
 
     /**
      * Special rule to determine if entity is invalid.
      * Granularity that the value must adhere to.
      * Either min or 0 select the starting valid value.
     */
-    step?: Rule<number, "field", "number">;
+    step?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "field", "number">;
   };
 };
 
@@ -206,27 +214,27 @@ export type SelectFieldSchema<
 > & {
   subtype: "select";
   options: Json[];
-  default?: Json[];
-  rules?: BaseRules<"field", "select"> & {
+  default?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, Json[], "field", "select">;
+  rules?: BaseRules<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, "field", "select"> & {
     /**
      * Special rule to determine if entity is invalid.
      * Selected options cannot be fewer than this.
      * If exclusive is true it cannot be equal to this either.
     */
-    minselected?: Rule<number, "field", "select">;
+    minselected?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "field", "select">;
 
     /**
      * Special rule to determine if entity is invalid.
      * Selected options cannot be more numerous than this.
      * If exclusive is true it cannot be equal to this either.
     */
-    maxselected?: Rule<number, "field", "select">;
+    maxselected?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "field", "select">;
 
     /**
      * Special rule to determine if entity is invalid.
      * Number of selected options cannot be other than this.
     */
-    fixedselected?: Rule<number, "field", "select">;
+    fixedselected?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "field", "select">;
   };
 };
 
@@ -279,7 +287,7 @@ export type GroupSchema<
   SelectFieldProps
 > & {
   type: "group";
-  default?: {[key: string]: any};
+  default?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, {[key: string]: any}, "group">;
   contents: {
     [name: string]: EntitySchema<
       Props,
@@ -290,7 +298,7 @@ export type GroupSchema<
       SelectFieldProps
     >;
   };
-  rules?: BaseRules<"group">;
+  rules?: BaseRules<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, "group">;
 };
 
 /** Represents an arbitrary number of similar things */
@@ -312,7 +320,7 @@ export type ListSchema<
   SelectFieldProps
 > & {
   type: "list";
-  default?: any[];
+  default?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, any[], "list">;
   items: EntitySchema<
     Props,
     GroupProps,
@@ -321,24 +329,24 @@ export type ListSchema<
     NumberFieldProps,
     SelectFieldProps
   >;
-  rules?: BaseRules<"list"> & {
+  rules?: BaseRules<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, "list"> & {
     /**
      * Special rule to determine if entity is invalid.
      * Number of items cannot be less than this.
     */
-    minitems?: Rule<number, "list">;
+    minitems?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "list">;
 
     /**
      * Special rule to determine if entity is invalid.
      * Number of items cannot be more than this.
     */
-    maxitems?: Rule<number, "list">;
+    maxitems?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "list">;
 
     /**
      * Special rule to determine if entity is invalid.
      * Number of items cannot be other than this.
     */
-    fixeditems?: Rule<number, "list">;
+    fixeditems?: Rule<Props, GroupProps, ListProps, TextFieldProps, NumberFieldProps, SelectFieldProps, number, "list">;
   };
 };
 

@@ -22,19 +22,21 @@ describe("number field", () => {
   });
 
   it("converts given value to make it valid", () => {
-    d = new Data({
+    d = new Data<{a: any}>({
       type: "field",
       subtype: "number",
-      default: "69"
+      default: e => e.props.a,
+      props: {a: "69"}
     });
     expect(d.entity.number?.value).toBe(69);
   });
 
   it("is invalid if given value cannot be converted", () => {
-    d = new Data({
+    d = new Data<{a: any}>({
       type: "field",
       subtype: "number",
-      default: "a"
+      default: e => e.props.a,
+      props: {a: "a"}
     });
     expect(d.entity.number?.value).toBe(NaN);
     expect(d.entity.number?.valid).toBe(false);
