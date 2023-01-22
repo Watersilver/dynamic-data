@@ -41,7 +41,6 @@ function createEntity({
 export type EntityCreator = typeof createEntity;
 
 // TODO: import and export
-// TODO: Add generic props parameters
 // TODO: Export guards and types
 // TODO: Async rules and func/async default value
 class Data<
