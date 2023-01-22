@@ -40,7 +40,18 @@ function createEntity({
 
 export type EntityCreator = typeof createEntity;
 
-class Data {
+// TODO: import and export
+// TODO: Add generic props parameters
+// TODO: Export guards and types
+// TODO: Async rules and func/async default value
+class Data<
+  Props = any,
+  GroupProps = Props,
+  ListProps = GroupProps,
+  TextFieldProps = ListProps,
+  NumberFieldProps = TextFieldProps,
+  SelectFieldProps = NumberFieldProps
+> {
   entity: EntityInterface;
   onEntityConstruct;
   onFieldChange;

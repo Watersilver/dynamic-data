@@ -58,7 +58,7 @@ type BaseRules<Type = string, Subtype = string> = {
 type AbstractEntitySchema<
   Type = string,
   Subtype = string,
-  Props = {[key: string]: unknown},
+  Props = any,
   GroupProps = Props,
   ListProps = GroupProps,
   TextFieldProps = ListProps,
@@ -84,7 +84,7 @@ type AbstractEntitySchema<
 
 type AbstractFieldSchema<
   Subtype = string,
-  Props = {[key: string]: unknown},
+  Props = any,
   GroupProps = Props,
   ListProps = GroupProps,
   TextFieldProps = ListProps,
@@ -105,7 +105,7 @@ type AbstractFieldSchema<
 };
 
 export type TextFieldSchema<
-  Props = {[key: string]: unknown},
+  Props = any,
   GroupProps = Props,
   ListProps = GroupProps,
   TextFieldProps = ListProps,
@@ -147,7 +147,7 @@ export type TextFieldSchema<
 };
 
 export type NumberFieldSchema<
-  Props = {[key: string]: unknown},
+  Props = any,
   GroupProps = Props,
   ListProps = GroupProps,
   TextFieldProps = ListProps,
@@ -189,7 +189,7 @@ export type NumberFieldSchema<
 };
 
 export type SelectFieldSchema<
-  Props = {[key: string]: unknown},
+  Props = any,
   GroupProps = Props,
   ListProps = GroupProps,
   TextFieldProps = ListProps,
@@ -231,7 +231,7 @@ export type SelectFieldSchema<
 };
 
 export type FieldSchema<
-  Props = {[key: string]: unknown},
+  Props = any,
   GroupProps = Props,
   ListProps = GroupProps,
   TextFieldProps = ListProps,
@@ -262,7 +262,7 @@ export type FieldSchema<
 
 /** Represents a group of speific distinct things */
 export type GroupSchema<
-  Props = {[key: string]: unknown},
+  Props = any,
   GroupProps = Props,
   ListProps = GroupProps,
   TextFieldProps = ListProps,
@@ -295,7 +295,7 @@ export type GroupSchema<
 
 /** Represents an arbitrary number of similar things */
 export type ListSchema<
-  Props = {[key: string]: unknown},
+  Props = any,
   GroupProps = Props,
   ListProps = GroupProps,
   TextFieldProps = ListProps,
@@ -343,7 +343,7 @@ export type ListSchema<
 };
 
 export type EntitySchema<
-  Props = {[key: string]: unknown},
+  Props = any,
   GroupProps = Props,
   ListProps = GroupProps,
   TextFieldProps = ListProps,
