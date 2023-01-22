@@ -52,28 +52,88 @@ class Data<
   NumberFieldProps = TextFieldProps,
   SelectFieldProps = NumberFieldProps
 > {
-  entity: EntityInterface;
+  entity: EntityInterface<
+    Props,
+    GroupProps,
+    ListProps,
+    TextFieldProps,
+    NumberFieldProps,
+    SelectFieldProps
+  >;
   onEntityConstruct;
   onFieldChange;
-  constructor(schema: EntitySchema, options?: {
-    onEntityConstruct?: (e: EntityInterface) => void,
-    onFieldChange?: (e: EntityInterface) => void
+  constructor(schema: EntitySchema<
+      Props,
+      GroupProps,
+      ListProps,
+      TextFieldProps,
+      NumberFieldProps,
+      SelectFieldProps
+    >, options?: {
+    onEntityConstruct?: (e: EntityInterface<
+      Props,
+      GroupProps,
+      ListProps,
+      TextFieldProps,
+      NumberFieldProps,
+      SelectFieldProps
+    >) => void;
+    onFieldChange?: (e: EntityInterface<
+      Props,
+      GroupProps,
+      ListProps,
+      TextFieldProps,
+      NumberFieldProps,
+      SelectFieldProps
+    >) => void;
+    props?: Props;
   }) {
+    this.props = options?.props;
     this.onEntityConstruct = options?.onEntityConstruct;
     this.entity = createEntity({data: this, schema});
     this.onFieldChange = options?.onFieldChange;
   }
 
-  tread(): EntityInterface | undefined;
-  tread(path: string): EntityInterface | undefined;
-  tread(path: (string | number)[]): EntityInterface | undefined;
+  props?: Props;
+
+  tread(): EntityInterface<
+    Props,
+    GroupProps,
+    ListProps,
+    TextFieldProps,
+    NumberFieldProps,
+    SelectFieldProps
+  > | undefined;
+  tread(path: string): EntityInterface<
+    Props,
+    GroupProps,
+    ListProps,
+    TextFieldProps,
+    NumberFieldProps,
+    SelectFieldProps
+  > | undefined;
+  tread(path: (string | number)[]): EntityInterface<
+    Props,
+    GroupProps,
+    ListProps,
+    TextFieldProps,
+    NumberFieldProps,
+    SelectFieldProps
+  > | undefined;
   tread(path?: (string | number)[] | string) {
     if (!path) path = [];
     if (typeof path === "string") {
       path = path.split(".").map(p => /^\d+$/.test(p) ? Number(p) : p);
     }
 
-    let e: EntityInterface | undefined = this.entity;
+    let e: EntityInterface<
+      Props,
+      GroupProps,
+      ListProps,
+      TextFieldProps,
+      NumberFieldProps,
+      SelectFieldProps
+    > | undefined = this.entity;
     for (const p of path) {
       if (typeof p === "string") e = e?.group?.contents[p];
       else e = e?.list?.items[p];

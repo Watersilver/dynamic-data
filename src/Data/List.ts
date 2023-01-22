@@ -3,6 +3,7 @@ import { ListSchema } from "../schema";
 import type Data from "./Data";
 import { EntityCreator } from "./Data";
 import { applyRule } from "./helpers/applyRule";
+import { clone } from "./helpers/clone";
 // import didValChange from "./helpers/didValChange";
 import { equals, isJson } from "./helpers/Json";
 import { getIndex } from "./methods/getIndex";
@@ -212,33 +213,6 @@ class List implements ListInterface {
     this._items.splice(this.rules?.minitems ?? 0, this._items.length);
   }
 
-  readonly schema: ListSchema;
-  readonly data: Data;
-  readonly container?: ListInterface | GroupInterface;
-
-  private _createEntity;
-  constructor(init: {
-    schema: ListSchema;
-    data: Data;
-    container?: ListInterface | GroupInterface;
-    createEntity: EntityCreator;
-  }) {
-    this.schema = init.schema;
-    this.data = init.data;
-    this.container = init.container;
-    this._createEntity = init.createEntity;
-
-    if (this.rules?.minitems) {
-      for (let i = 0; i < this.rules.minitems; i++) {
-        this._addItem();
-      }
-    }
-
-    if (this.schema.default) this.reset();
-
-    this.data.onEntityConstruct?.(this);
-  }
-
   get index(): number | undefined {
     return getIndex(this);
   }
@@ -264,6 +238,42 @@ class List implements ListInterface {
   text = undefined;
   number = undefined;
   select = undefined;
+
+  get props() {
+    return this._props;
+  }
+  set props(p: any) {
+    this._props = p;
+  }
+
+  readonly schema: ListSchema;
+  readonly data: Data;
+  readonly container?: ListInterface | GroupInterface;
+  private _props: any;
+
+  private _createEntity;
+  constructor(init: {
+    schema: ListSchema;
+    data: Data;
+    container?: ListInterface | GroupInterface;
+    createEntity: EntityCreator;
+  }) {
+    this.schema = init.schema;
+    this.data = init.data;
+    this.container = init.container;
+    this._createEntity = init.createEntity;
+    this._props = clone(init.schema.props);
+
+    if (this.rules?.minitems) {
+      for (let i = 0; i < this.rules.minitems; i++) {
+        this._addItem();
+      }
+    }
+
+    if (this.schema.default) this.reset();
+
+    this.data.onEntityConstruct?.(this);
+  }
 }
 
 export default List

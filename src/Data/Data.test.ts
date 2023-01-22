@@ -2,6 +2,69 @@ import { EntitySchema } from "../schema";
 import Data from "./Data"
 
 describe("Data", () => {
+
+  it("compiles", () => {
+    const d1 = new Data<{prop1: number}>({
+      type: "field",
+      subtype: "number"
+    });
+
+    d1.entity.schema.props?.prop1
+    d1.entity.group?.schema.props?.prop1
+    d1.entity.list?.schema.props?.prop1
+    d1.entity.text?.schema.props?.prop1
+    d1.entity.number?.schema.props?.prop1
+    d1.entity.select?.schema.props?.prop1
+    d1.entity.group?.contents.a?.schema.props?.prop1
+    d1.entity.group?.contents.a?.group?.schema.props?.prop1
+    d1.entity.group?.contents.a?.list?.schema.props?.prop1
+    d1.entity.group?.contents.a?.number?.schema.props?.prop1
+    d1.entity.group?.contents.a?.text?.schema.props?.prop1
+    d1.entity.group?.contents.a?.select?.schema.props?.prop1
+    d1.entity.list?.items[0]?.schema.props?.prop1
+    d1.entity.list?.items[0]?.group?.schema.props?.prop1
+    d1.entity.list?.items[0]?.list?.schema.props?.prop1
+    d1.entity.list?.items[0]?.number?.schema.props?.prop1
+    d1.entity.list?.items[0]?.text?.schema.props?.prop1
+    d1.entity.list?.items[0]?.select?.schema.props?.prop1
+    let e1 = d1.entity.list?.items[0]
+    e1 = e1?.tread()
+    e1 = e1?.tread("a.b")
+    e1 = e1?.tread(["a", "b"])
+    e1 = e1?.container;
+
+    const d2 = new Data<{common: string; data: number}, {common: string; group: number}, {common: string; list: number}, {common: string; text: number}, {common: string; number: string}, {common: string; select: number}>({
+      type: "field",
+      subtype: "number"
+    });
+
+    d2.entity.schema.props?.common
+    d2.entity.group?.schema.props?.group
+    d2.entity.list?.schema.props?.list
+    d2.entity.text?.schema.props?.text
+    d2.entity.number?.schema.props?.number
+    d2.entity.select?.schema.props?.select
+    d2.entity.group?.contents.a?.schema.props?.common
+    d2.entity.group?.contents.a?.group?.schema.props?.group
+    d2.entity.group?.contents.a?.list?.schema.props?.list
+    d2.entity.group?.contents.a?.number?.schema.props?.number
+    d2.entity.group?.contents.a?.text?.schema.props?.text
+    d2.entity.group?.contents.a?.select?.schema.props?.select
+    d2.entity.list?.items[0]?.schema.props?.common
+    d2.entity.list?.items[0]?.group?.schema.props?.group
+    d2.entity.list?.items[0]?.list?.schema.props?.list
+    d2.entity.list?.items[0]?.number?.schema.props?.number
+    d2.entity.list?.items[0]?.text?.schema.props?.text
+    d2.entity.list?.items[0]?.select?.schema.props?.select
+    let e2 = d2.entity.list?.items[0]
+    e2 = e2?.tread()
+    e2 = e2?.tread("a.b")
+    e2 = e2?.tread(["a", "b"])
+    e2 = e2?.container;
+
+    expect(1).toBe(1);
+  })
+
   const d = new Data({
     type: "group",
     contents: {

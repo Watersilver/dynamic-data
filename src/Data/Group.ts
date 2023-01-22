@@ -4,6 +4,7 @@ import type Data from "./Data";
 import { EntityCreator } from "./Data";
 import { applyRule } from "./helpers/applyRule";
 import { arrIncludes } from "./helpers/arrayUtil";
+import { clone } from "./helpers/clone";
 // import didValChange from "./helpers/didValChange";
 import { equals, isJson } from "./helpers/Json";
 import { getIndex } from "./methods/getIndex";
@@ -168,32 +169,6 @@ class Group implements GroupInterface {
     }
   };
 
-  readonly schema: GroupSchema;
-  readonly data: Data;
-  readonly container?: ListInterface | GroupInterface;
-  readonly contents: { [name: string]: EntityInterface; };
-
-  constructor(init: {
-    schema: GroupSchema;
-    data: Data;
-    container?: ListInterface | GroupInterface;
-    createEntity: EntityCreator;
-  }) {
-    this.schema = init.schema;
-    this.data = init.data;
-    this.container = init.container;
-
-    const contents: { [name: string]: EntityInterface; } = {};
-    for (const [name, item] of Object.entries(this.schema.contents)) {
-      contents[name] = init.createEntity({data: this.data, container: this, schema: item})
-    }
-    this.contents = contents;
-
-    if (this.schema.default) this.reset();
-
-    this.data.onEntityConstruct?.(this);
-  }
-
   get index(): number | undefined {
     return getIndex(this);
   }
@@ -219,6 +194,41 @@ class Group implements GroupInterface {
   text = undefined;
   number = undefined;
   select = undefined;
+
+  get props() {
+    return this._props;
+  }
+  set props(p: any) {
+    this._props = p;
+  }
+
+  readonly schema: GroupSchema;
+  readonly data: Data;
+  readonly container?: ListInterface | GroupInterface;
+  readonly contents: { [name: string]: EntityInterface; };
+  private _props: any;
+
+  constructor(init: {
+    schema: GroupSchema;
+    data: Data;
+    container?: ListInterface | GroupInterface;
+    createEntity: EntityCreator;
+  }) {
+    this.schema = init.schema;
+    this.data = init.data;
+    this.container = init.container;
+    this._props = clone(init.schema.props);
+
+    const contents: { [name: string]: EntityInterface; } = {};
+    for (const [name, item] of Object.entries(this.schema.contents)) {
+      contents[name] = init.createEntity({data: this.data, container: this, schema: item})
+    }
+    this.contents = contents;
+
+    if (this.schema.default) this.reset();
+
+    this.data.onEntityConstruct?.(this);
+  }
 }
 
 export default Group

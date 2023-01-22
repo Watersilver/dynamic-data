@@ -2,6 +2,7 @@ import { EntityInterface, GroupInterface, ListInterface, SelectFieldErrors, Sele
 import { SelectFieldSchema } from "../schema";
 import type Data from "./Data";
 import { applyRule } from "./helpers/applyRule";
+import { clone } from "./helpers/clone";
 import didValChange from "./helpers/didValChange";
 import { equals, isJson, Json } from "./helpers/Json";
 import { getIndex } from "./methods/getIndex";
@@ -130,25 +131,6 @@ class SelectField implements SelectFieldInterface {
     }
   };
 
-  readonly schema: SelectFieldSchema;
-  readonly data: Data;
-  readonly container?: ListInterface | GroupInterface;
-
-  constructor(init: {
-    schema: SelectFieldSchema;
-    data: Data;
-    container?: ListInterface | GroupInterface;
-  }) {
-    this.schema = init.schema;
-    this.data = init.data;
-    this.container = init.container;
-
-    if (this.schema.default) this.reset();
-
-    this.data.onEntityConstruct?.(this);
-  }
-
-
   get index(): number | undefined {
     return getIndex(this);
   }
@@ -174,6 +156,33 @@ class SelectField implements SelectFieldInterface {
   list = undefined;
   text = undefined;
   number = undefined;
+
+  get props() {
+    return this._props;
+  }
+  set props(p: any) {
+    this._props = p;
+  }
+
+  readonly schema: SelectFieldSchema;
+  readonly data: Data;
+  readonly container?: ListInterface | GroupInterface;
+  private _props: any;
+
+  constructor(init: {
+    schema: SelectFieldSchema;
+    data: Data;
+    container?: ListInterface | GroupInterface;
+  }) {
+    this.schema = init.schema;
+    this.data = init.data;
+    this.container = init.container;
+    this._props = clone(init.schema.props);
+
+    if (this.schema.default) this.reset();
+
+    this.data.onEntityConstruct?.(this);
+  }
 }
 
 export default SelectField

@@ -2,6 +2,7 @@ import { EntityInterface, GroupInterface, ListInterface, TextFieldErrors, TextFi
 import { TextFieldSchema } from "../schema";
 import type Data from "./Data";
 import { applyRule } from "./helpers/applyRule";
+import { clone } from "./helpers/clone";
 import didValChange from "./helpers/didValChange";
 import { equals, isJson } from "./helpers/Json";
 import { getIndex } from "./methods/getIndex";
@@ -124,24 +125,6 @@ class TextField implements TextFieldInterface {
     }
   };
 
-  readonly schema: TextFieldSchema;
-  readonly data: Data;
-  readonly container?: ListInterface | GroupInterface;
-
-  constructor(init: {
-    schema: TextFieldSchema;
-    data: Data;
-    container?: ListInterface | GroupInterface;
-  }) {
-    this.schema = init.schema;
-    this.data = init.data;
-    this.container = init.container;
-
-    if (this.schema.default) this.reset();
-
-    this.data.onEntityConstruct?.(this);
-  }
-
   get index(): number | undefined {
     return getIndex(this);
   }
@@ -167,6 +150,33 @@ class TextField implements TextFieldInterface {
   list = undefined;
   number = undefined;
   select = undefined;
+
+  get props() {
+    return this._props;
+  }
+  set props(p: any) {
+    this._props = p;
+  }
+
+  readonly schema: TextFieldSchema;
+  readonly data: Data;
+  readonly container?: ListInterface | GroupInterface;
+  private _props: any;
+
+  constructor(init: {
+    schema: TextFieldSchema;
+    data: Data;
+    container?: ListInterface | GroupInterface;
+  }) {
+    this.schema = init.schema;
+    this.data = init.data;
+    this.container = init.container;
+    this._props = clone(init.schema.props);
+
+    if (this.schema.default) this.reset();
+
+    this.data.onEntityConstruct?.(this);
+  }
 }
 
 export default TextField
