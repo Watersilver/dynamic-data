@@ -76,7 +76,7 @@ describe("Data", () => {
             min: (e: any) => (e.container.props.ad || 69) - 1
           },
           props: {
-            bad: (d: Data) => d.entity.props?.ad
+            bad: (d: any) => d.entity.props.ad
           }
         }
       },
