@@ -76,7 +76,7 @@ describe("Data", () => {
             min: (e: any) => (e.container.props.ad || 69) - 1
           },
           props: {
-            bad: (d: Data) => d.entity.props.ad
+            bad: (d: Data) => d.entity.props?.ad
           }
         }
       },
@@ -140,7 +140,7 @@ describe("Data", () => {
       }
     });
     const imported = new Data(Data.import(exp));
-    expect(imported.tread('a')?.props.bad(imported)).toBe(1);
+    expect(imported.tread('a')?.props?.bad(imported)).toBe(1);
     expect(imported.tread('a')?.number?.rules?.min).toBe(0);
   });
 
