@@ -22,10 +22,10 @@ describe("string field", () => {
   });
 
   it("converts given value to make it valid", () => {
-    d = new Data<{a: any}>({
+    d = new Data({
       type: "field",
       subtype: "text",
-      default: e => e.props.a,
+      default: e => e.props?.a,
       props: {a: 69}
     });
     expect(d.entity.text?.value).toBe("69");

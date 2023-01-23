@@ -4,7 +4,7 @@ import Data from "./Data"
 describe("Data", () => {
 
   it("compiles", () => {
-    const d1 = new Data<{prop1: number}>({
+    const d1 = new Data({
       type: "field",
       subtype: "number"
     });
@@ -33,7 +33,7 @@ describe("Data", () => {
     e1 = e1?.tread(["a", "b"])
     e1 = e1?.container;
 
-    const d2 = new Data<{common: string; data: number}, {common: string; group: number}, {common: string; list: number}, {common: string; text: number}, {common: string; number: string}, {common: string; select: number}>({
+    const d2 = new Data({
       type: "field",
       subtype: "number"
     });

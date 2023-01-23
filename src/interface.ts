@@ -45,498 +45,92 @@ export type SelectFieldErrors = {
 
 export type Errors = GroupErrors | ListErrors | TextFieldErrors | NumberFieldErrors | SelectFieldErrors;
 
-export interface AbstractEntityInterface<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
-> {
+export interface AbstractEntityInterface {
   clear(): void;
   reset(): void;
   equals(value: any): boolean;
-  tread(): EntityInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
-  tread(path: string): EntityInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
-  tread(path: (string | number)[]): EntityInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
-  tread(backtrack: number): EntityInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
-  tread(backtrack: number, path: string): EntityInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
-  tread(backtrack: number, path: (string | number)[]): EntityInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
+  tread(): EntityInterface | undefined;
+  tread(path: string): EntityInterface | undefined;
+  tread(path: (string | number)[]): EntityInterface | undefined;
+  tread(backtrack: number): EntityInterface | undefined;
+  tread(backtrack: number, path: string): EntityInterface | undefined;
+  tread(backtrack: number, path: (string | number)[]): EntityInterface | undefined;
   readonly disabled: boolean;
   readonly valid: boolean;
   readonly empty: boolean;
-  readonly data: Data<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+  readonly data: Data;
   readonly name?: string;
   readonly index?: number;
   readonly root: boolean;
   value: any;
   readonly path: (string | number)[];
-  readonly container?: ListInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | GroupInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
-  readonly group: GroupInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
-  readonly list: ListInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
-  readonly number: NumberFieldInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
-  readonly text: TextFieldInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
-  readonly select: SelectFieldInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  > | undefined;
+  readonly container?: ListInterface | GroupInterface;
+  readonly group: GroupInterface | undefined;
+  readonly list: ListInterface | undefined;
+  readonly number: NumberFieldInterface | undefined;
+  readonly text: TextFieldInterface | undefined;
+  readonly select: SelectFieldInterface | undefined;
 };
-export function isGroup<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
->(e: EntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->): e is GroupInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-> {
+export function isGroup(e: EntityInterface): e is GroupInterface {
   return e.schema.type === "group"
 }
-export interface GroupInterface<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
-> extends AbstractEntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-> {
-  props: GroupProps;
-  readonly schema: GroupSchema<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+export interface GroupInterface extends AbstractEntityInterface {
+  props?: {[key: string]: any};
+  readonly schema: GroupSchema;
   readonly rules: GroupRules;
   readonly errors?: GroupErrors;
-  readonly contents: {readonly [name: string]: EntityInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >};
-  set(value: any): GroupInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+  readonly contents: {readonly [name: string]: EntityInterface};
+  set(value: any): GroupInterface;
   conforms(value: unknown): value is {[key: string]: Value};
 };
-export function isList<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
->(e: EntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->): e is ListInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-> {
+export function isList(e: EntityInterface): e is ListInterface {
   return e.schema.type === "list"
 };
-export interface ListInterface<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
-> extends AbstractEntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-> {
-  props: ListProps;
-  readonly schema: ListSchema<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+export interface ListInterface extends AbstractEntityInterface {
+  props?: {[key: string]: any};
+  readonly schema: ListSchema;
   readonly rules: ListRules;
   readonly errors?: ListErrors;
-  readonly items: readonly EntityInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >[];
-  set(value: any): ListInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+  readonly items: readonly EntityInterface[];
+  set(value: any): ListInterface;
   conforms(value: unknown): value is Value[];
 };
-export function isTextField<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
->(e: EntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->): e is TextFieldInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-  > {
+export function isTextField(e: EntityInterface): e is TextFieldInterface {
   return e.schema.type === "field" && e.schema.subtype === "text"
 };
-export interface TextFieldInterface<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
-> extends AbstractEntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-> {
-  props: TextFieldProps;
-  readonly schema: TextFieldSchema<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+export interface TextFieldInterface extends AbstractEntityInterface {
+  props?: {[key: string]: any};
+  readonly schema: TextFieldSchema;
   readonly rules: TextFieldRules;
   readonly errors?: TextFieldErrors;
-  set(value: any): TextFieldInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+  set(value: any): TextFieldInterface;
   conforms(value: unknown): value is string | undefined;
 };
-export function isNumberField<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
->(e: EntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->): e is NumberFieldInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-> {
+export function isNumberField(e: EntityInterface): e is NumberFieldInterface {
   return e.schema.type === "field" && e.schema.subtype === "number"
 };
-export interface NumberFieldInterface<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
-> extends AbstractEntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-> {
-  props: NumberFieldProps;
-  readonly schema: NumberFieldSchema<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+export interface NumberFieldInterface extends AbstractEntityInterface {
+  props?: {[key: string]: any};
+  readonly schema: NumberFieldSchema;
   readonly rules: NumberFieldRules;
   readonly errors?: NumberFieldErrors;
-  set(value: any): NumberFieldInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+  set(value: any): NumberFieldInterface;
   conforms(value: unknown): value is number | undefined;
 };
-export function isSelectField<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
->(e: EntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->): e is SelectFieldInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-> {
+export function isSelectField(e: EntityInterface): e is SelectFieldInterface {
   return e.schema.type === "field" && e.schema.subtype === "select"
 };
-export interface SelectFieldInterface<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
-> extends AbstractEntityInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
-> {
-  props: SelectFieldProps;
-  readonly schema: SelectFieldSchema<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+export interface SelectFieldInterface extends AbstractEntityInterface {
+  props?: {[key: string]: any};
+  readonly schema: SelectFieldSchema;
   readonly rules: SelectFieldRules;
   readonly errors?: SelectFieldErrors;
-  set(value: any): SelectFieldInterface<
-    Props,
-    GroupProps,
-    ListProps,
-    TextFieldProps,
-    NumberFieldProps,
-    SelectFieldProps
-  >;
+  set(value: any): SelectFieldInterface;
   conforms(value: unknown): value is Json[] | undefined;
 };
-export type EntityInterface<
-  Props = any,
-  GroupProps = Props,
-  ListProps = GroupProps,
-  TextFieldProps = ListProps,
-  NumberFieldProps = TextFieldProps,
-  SelectFieldProps = NumberFieldProps
-> =
-| GroupInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->
-| ListInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->
-| TextFieldInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->
-| NumberFieldInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->
-| SelectFieldInterface<
-  Props,
-  GroupProps,
-  ListProps,
-  TextFieldProps,
-  NumberFieldProps,
-  SelectFieldProps
->;
+export type EntityInterface =
+| GroupInterface
+| ListInterface
+| TextFieldInterface
+| NumberFieldInterface
+| SelectFieldInterface;

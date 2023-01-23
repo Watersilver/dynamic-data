@@ -73,14 +73,14 @@ describe("select field", () => {
   });
 
   it("can have a minselected value", () => {
-    d = new Data<{d: any[]}>({
+    d = new Data({
       type: "field",
       subtype: "select",
       options: [{}, 1, "g", true, null],
       rules: {
         minselected: 2
       },
-      default: e => e.props.d,
+      default: e => e.props?.d,
       props: {d: [{}, 1]}
     });
     const f = d.entity.select;

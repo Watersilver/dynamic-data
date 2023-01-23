@@ -198,18 +198,12 @@ class Group implements GroupInterface {
   number = undefined;
   select = undefined;
 
-  get props() {
-    return this._props;
-  }
-  set props(p: any) {
-    this._props = p;
-  }
+  props?: {[key: string]: any};
 
   readonly schema: GroupSchema;
   readonly data: Data;
   readonly container?: ListInterface | GroupInterface;
   readonly contents: { [name: string]: EntityInterface; };
-  private _props: any;
 
   constructor(init: {
     schema: GroupSchema;
@@ -220,7 +214,7 @@ class Group implements GroupInterface {
     this.schema = init.schema;
     this.data = init.data;
     this.container = init.container;
-    this._props = clone(init.schema.props);
+    this.props = clone(init.schema.props);
 
     const contents: { [name: string]: EntityInterface; } = {};
     for (const [name, item] of Object.entries(this.schema.contents)) {

@@ -162,17 +162,11 @@ class SelectField implements SelectFieldInterface {
   text = undefined;
   number = undefined;
 
-  get props() {
-    return this._props;
-  }
-  set props(p: any) {
-    this._props = p;
-  }
+  props?: {[key: string]: any};
 
   readonly schema: SelectFieldSchema;
   readonly data: Data;
   readonly container?: ListInterface | GroupInterface;
-  private _props: any;
 
   constructor(init: {
     schema: SelectFieldSchema;
@@ -182,7 +176,7 @@ class SelectField implements SelectFieldInterface {
     this.schema = init.schema;
     this.data = init.data;
     this.container = init.container;
-    this._props = clone(init.schema.props);
+    this.props = clone(init.schema.props);
 
     if (this.schema.default) this.reset();
 

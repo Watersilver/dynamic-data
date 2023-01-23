@@ -156,17 +156,11 @@ class TextField implements TextFieldInterface {
   number = undefined;
   select = undefined;
 
-  get props() {
-    return this._props;
-  }
-  set props(p: any) {
-    this._props = p;
-  }
+  props?: {[key: string]: any};
 
   readonly schema: TextFieldSchema;
   readonly data: Data;
   readonly container?: ListInterface | GroupInterface;
-  private _props: any;
 
   constructor(init: {
     schema: TextFieldSchema;
@@ -176,7 +170,7 @@ class TextField implements TextFieldInterface {
     this.schema = init.schema;
     this.data = init.data;
     this.container = init.container;
-    this._props = clone(init.schema.props);
+    this.props = clone(init.schema.props);
 
     if (this.schema.default) this.reset();
 

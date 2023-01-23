@@ -242,17 +242,11 @@ class List implements ListInterface {
   number = undefined;
   select = undefined;
 
-  get props() {
-    return this._props;
-  }
-  set props(p: any) {
-    this._props = p;
-  }
+  props?: {[key: string]: any};
 
   readonly schema: ListSchema;
   readonly data: Data;
   readonly container?: ListInterface | GroupInterface;
-  private _props: any;
 
   private _createEntity;
   constructor(init: {
@@ -265,7 +259,7 @@ class List implements ListInterface {
     this.data = init.data;
     this.container = init.container;
     this._createEntity = init.createEntity;
-    this._props = clone(init.schema.props);
+    this.props = clone(init.schema.props);
 
     if (this.rules?.minitems) {
       for (let i = 0; i < this.rules.minitems; i++) {
