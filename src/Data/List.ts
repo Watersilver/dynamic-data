@@ -193,6 +193,9 @@ class List implements ListInterface {
     if (this.rules?.maxitems && this.rules.maxitems >= this.items.length) {
       return;
     }
+    if (this.rules?.fixeditems && this.rules.fixeditems >= this.items.length) {
+      return;
+    }
 
     const itemSchema = this.schema.items;
     const items = this._items;
@@ -206,6 +209,9 @@ class List implements ListInterface {
     if (this.rules?.minitems && this.rules.minitems <= this.items.length) {
       return;
     }
+    if (this.rules?.fixeditems && this.rules.fixeditems <= this.items.length) {
+      return;
+    }
 
     i = i ?? (this._items.length - 1);
     this._items.splice(i, 1);
@@ -213,7 +219,8 @@ class List implements ListInterface {
 
   private _removeAll() {
     // Ensure no less than min
-    this._items.splice(this.rules?.minitems ?? 0, this._items.length);
+    const min = typeof this.rules?.fixeditems === "number" ? this.rules?.fixeditems : this.rules?.minitems;
+    this._items.splice(min ?? 0, this._items.length);
   }
 
   get index(): number | undefined {
