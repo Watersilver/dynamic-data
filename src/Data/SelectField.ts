@@ -162,7 +162,7 @@ class SelectField implements SelectFieldInterface {
   text = undefined;
   number = undefined;
 
-  props?: {[key: string]: any};
+  props?: any;
 
   readonly schema: SelectFieldSchema;
   readonly data: Data;

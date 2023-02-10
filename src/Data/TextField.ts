@@ -156,7 +156,7 @@ class TextField implements TextFieldInterface {
   number = undefined;
   select = undefined;
 
-  props?: {[key: string]: any};
+  props?: any;
 
   readonly schema: TextFieldSchema;
   readonly data: Data;

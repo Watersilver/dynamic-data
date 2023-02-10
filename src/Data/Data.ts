@@ -145,7 +145,7 @@ class Data {
     return this._export(this.entity.schema);
   }
 
-  props?: {[key: string]: any};
+  props?: any;
 
   tread(): EntityInterface | undefined;
   tread(path: string): EntityInterface | undefined;

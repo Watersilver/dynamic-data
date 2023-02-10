@@ -198,7 +198,7 @@ class Group implements GroupInterface {
   number = undefined;
   select = undefined;
 
-  props?: {[key: string]: any};
+  props?: any;
 
   readonly schema: GroupSchema;
   readonly data: Data;

@@ -193,7 +193,7 @@ class NumberField implements NumberFieldInterface {
   text = undefined;
   select = undefined;
 
-  props?: {[key: string]: any};
+  props?: any;
 
   readonly schema: NumberFieldSchema;
   readonly data: Data;

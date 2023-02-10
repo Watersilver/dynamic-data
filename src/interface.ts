@@ -63,6 +63,7 @@ export interface AbstractEntityInterface {
   readonly index?: number;
   readonly root: boolean;
   value: any;
+  props?: any;
   readonly path: (string | number)[];
   readonly container?: ListInterface | GroupInterface;
   readonly group: GroupInterface | undefined;
@@ -75,7 +76,6 @@ export function isGroup(e: EntityInterface): e is GroupInterface {
   return e.schema.type === "group"
 }
 export interface GroupInterface extends AbstractEntityInterface {
-  props?: {[key: string]: any};
   readonly schema: GroupSchema;
   readonly rules: GroupRules;
   readonly errors?: GroupErrors;
@@ -87,7 +87,6 @@ export function isList(e: EntityInterface): e is ListInterface {
   return e.schema.type === "list"
 };
 export interface ListInterface extends AbstractEntityInterface {
-  props?: {[key: string]: any};
   readonly schema: ListSchema;
   readonly rules: ListRules;
   readonly errors?: ListErrors;
@@ -99,7 +98,6 @@ export function isTextField(e: EntityInterface): e is TextFieldInterface {
   return e.schema.type === "field" && e.schema.subtype === "text"
 };
 export interface TextFieldInterface extends AbstractEntityInterface {
-  props?: {[key: string]: any};
   readonly schema: TextFieldSchema;
   readonly rules: TextFieldRules;
   readonly errors?: TextFieldErrors;
@@ -110,7 +108,6 @@ export function isNumberField(e: EntityInterface): e is NumberFieldInterface {
   return e.schema.type === "field" && e.schema.subtype === "number"
 };
 export interface NumberFieldInterface extends AbstractEntityInterface {
-  props?: {[key: string]: any};
   readonly schema: NumberFieldSchema;
   readonly rules: NumberFieldRules;
   readonly errors?: NumberFieldErrors;
@@ -121,7 +118,6 @@ export function isSelectField(e: EntityInterface): e is SelectFieldInterface {
   return e.schema.type === "field" && e.schema.subtype === "select"
 };
 export interface SelectFieldInterface extends AbstractEntityInterface {
-  props?: {[key: string]: any};
   readonly schema: SelectFieldSchema;
   readonly rules: SelectFieldRules;
   readonly errors?: SelectFieldErrors;

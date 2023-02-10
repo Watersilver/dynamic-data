@@ -249,7 +249,7 @@ class List implements ListInterface {
   number = undefined;
   select = undefined;
 
-  props?: {[key: string]: any};
+  props?: any;
 
   readonly schema: ListSchema;
   readonly data: Data;
